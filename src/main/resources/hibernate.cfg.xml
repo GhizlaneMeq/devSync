@@ -12,6 +12,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.show_sql">true</property>
 
-        <mapping class="org.example.devsync.entities.User"/>
+        <mapping class="org.example.devsync.models.User"/>
     </session-factory>
 </hibernate-configuration>

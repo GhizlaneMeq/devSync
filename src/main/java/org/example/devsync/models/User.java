@@ -1,8 +1,8 @@
-package org.example.devsync.entities;
+package org.example.devsync.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.example.devsync.entities.enums.UserRole;
+import org.example.devsync.models.enums.UserRole;
 
 @Entity
 @Table(

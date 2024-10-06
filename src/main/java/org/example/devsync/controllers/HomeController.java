@@ -1,4 +1,4 @@
-package org.example.devsync.servlet;
+package org.example.devsync.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

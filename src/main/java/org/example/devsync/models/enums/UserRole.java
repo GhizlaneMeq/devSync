@@ -1,4 +1,4 @@
-package org.example.devsync.entities.enums;
+package org.example.devsync.models.enums;
 
 public enum UserRole {
     MANAGER, USER

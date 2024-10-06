@@ -11,7 +11,7 @@
 
     <servlet>
         <servlet-name>UserServlet</servlet-name>
-        <servlet-class>org.example.devsync.servlet.UserServelet</servlet-class>
+        <servlet-class>org.example.devsync.controllers.UserController</servlet-class>
     </servlet>
 
     <servlet-mapping>

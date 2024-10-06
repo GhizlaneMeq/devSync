@@ -1,30 +1,32 @@
 package org.example.devsync.services;
 
-import org.example.devsync.entities.User;
-import org.example.devsync.repositories.implementations.UserRepository;
+import jakarta.inject.Inject;
+import org.example.devsync.models.User;
+import org.example.devsync.repositories.UserRepository;
 
+import jakarta.ejb.Stateless;
 import java.util.List;
-import java.util.Optional;
 
+@Stateless
 public class UserService {
-    UserRepository userRepository;
-    public UserService() {
-        this.userRepository = new UserRepository();
+
+    @Inject
+    private UserRepository userRepository;
+
+    public void saveUser(User user) {
+        userRepository.save(user);
     }
-    public void save(User user) {
-       userRepository.save(user);
-    }
-    public User findById(long id) {
+
+    public User getUserById(Long id) {
         return userRepository.findById(id);
     }
-    public List<User> findAll() {
+
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-    public void update(User user) {
-        userRepository.update(user);
-    }
 
-    public void delete(User user) {
-        userRepository.delete(user);
+
+    public void deleteUser(Long id) {
+        userRepository.delete(id);
     }
 }

@@ -1,101 +1,89 @@
-<%@ page import="org.example.devsync.entities.User" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Edit Account</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Edit User</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
-<!-- Navbar -->
-<nav class="bg-blue-600 p-4 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-white text-3xl font-bold">User Management System</h1>
-    </div>
-</nav>
+<body class="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+<div class="w-full max-w-md bg-white dark:bg-indigo-700 p-8 rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-gray-200">Edit User</h1>
+    <form action="${pageContext.request.contextPath}/users" method="post" class="space-y-4">
+        <input type="hidden" name="action" value="edit" />
+        <input type="hidden" name="id" value="${user.id}" />
+        <input type="hidden" name="csrfToken" value="${csrfToken}" />
 
-<!-- Main Content -->
-<div class="min-h-screen py-6 flex flex-col justify-center sm:py-12">
-    <div class="relative py-3 sm:max-w-3xl sm:mx-auto"> <!-- Changed max-w-xl to max-w-3xl -->
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-        <div class="relative px-6 py-12 bg-white shadow-lg sm:rounded-3xl sm:p-20"> <!-- Increased padding -->
-            <h1 class="text-3xl font-semibold text-center">Edit Account</h1> <!-- Increased font size -->
-            <form action="users" method="post">
-                <input type="hidden" name="action" value="update"/>
-                <input type="hidden" name="id" value="<%= ((User) request.getAttribute("user")).getId() %>"/>
-                <div class="divide-y divide-gray-200">
-                    <div class="py-10 text-base leading-7 space-y-6 text-gray-700 sm:text-lg sm:leading-8"> <!-- Increased padding and line height -->
-                        <div class="relative">
-                            <input autocomplete="off" id="username" name="username" type="text" value="<%= ((User) request.getAttribute("user")).getUsername() %>"
-                                   class="peer placeholder-transparent h-12 w-full border-b-2 border-gray-300 text-gray-900
-                                       focus:outline-none focus:border-blue-600" placeholder="User name" required />
-                            <label for="username" class="absolute left-0 -top-3.5 text-gray-600 text-sm
-                                       peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440
-                                       peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600
-                                       peer-focus:text-sm">User Name</label>
-                        </div>
-                        <div class="relative">
-                            <input autocomplete="off" id="firstName" name="firstName" type="text" value="<%= ((User) request.getAttribute("user")).getFirstName() %>"
-                                   class="peer placeholder-transparent h-12 w-full border-b-2 border-gray-300 text-gray-900
-                                       focus:outline-none focus:border-blue-600" placeholder="First name" required />
-                            <label for="firstName" class="absolute left-0 -top-3.5 text-gray-600 text-sm
-                                       peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440
-                                       peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600
-                                       peer-focus:text-sm">First Name</label>
-                        </div>
-                        <div class="relative">
-                            <input autocomplete="off" id="lastName" name="lastName" type="text" value="<%= ((User) request.getAttribute("user")).getLastName() %>"
-                                   class="peer placeholder-transparent h-12 w-full border-b-2 border-gray-300 text-gray-900
-                                       focus:outline-none focus:border-blue-600" placeholder="Last name" required />
-                            <label for="lastName" class="absolute left-0 -top-3.5 text-gray-600 text-sm
-                                       peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440
-                                       peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600
-                                       peer-focus:text-sm">Last Name</label>
-                        </div>
-                        <div class="relative">
-                            <input autocomplete="off" id="email" name="email" type="email" value="<%= ((User) request.getAttribute("user")).getEmail() %>"
-                                   class="peer placeholder-transparent h-12 w-full border-b-2 border-gray-300 text-gray-900
-                                       focus:outline-none focus:border-blue-600" placeholder="Email address" required />
-                            <label for="email" class="absolute left-0 -top-3.5 text-gray-600 text-sm
-                                       peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440
-                                       peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600
-                                       peer-focus:text-sm">Email Address</label>
-                        </div>
-                        <div class="relative">
-                            <input autocomplete="off" id="password" name="password" type="password" value="<%= ((User) request.getAttribute("user")).getPassword() %>"
-                                   class="peer placeholder-transparent h-12 w-full border-b-2 border-gray-300 text-gray-900
-                                       focus:outline-none focus:border-blue-600" placeholder="Password" required />
-                            <label for="password" class="absolute left-0 -top-3.5 text-gray-600 text-sm
-                                       peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440
-                                       peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600
-                                       peer-focus:text-sm">Password</label>
-                        </div>
-                        <div class="relative">
-                            <select id="role" name="role" class="peer placeholder-transparent h-12 w-full border-b-2
-                                       border-gray-300 text-gray-900 focus:outline-none focus:border-blue-600" required>
-                                <option value="USER" <%= ((User) request.getAttribute("user")).getRole().equals("USER") ? "selected" : "" %>>User</option>
-                                <option value="MANAGER" <%= ((User) request.getAttribute("user")).getRole().equals("MANAGER") ? "selected" : "" %>>Manager</option>
-                            </select>
-                            <label for="role" class="absolute left-0 -top-3.5 text-gray-600 text-sm
-                                       peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440
-                                       peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600
-                                       peer-focus:text-sm">Role</label>
-                        </div>
-                        <div class="relative">
-                            <button type="submit" class="bg-blue-500 text-white rounded-md px-6 py-3 hover:bg-blue-600 transition duration-200">Update User</button> <!-- Increased padding -->
-                        </div>
-                    </div>
-                </div>
-            </form>
+        <div>
+            <label for="username" class="block text-gray-700 dark:text-gray-300">Username</label>
+            <input id="username" name="username" type="text" required
+                   class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-indigo-600 dark:text-gray-200"
+                   placeholder="Enter your username"
+                   value="${user.username}" />
         </div>
+
+        <div>
+            <label for="password" class="block text-gray-700 dark:text-gray-300">Password</label>
+            <input id="password" name="password" type="password"
+                   class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-indigo-600 dark:text-gray-200"
+                   placeholder="Enter new password (leave blank to keep current password)" />
+        </div>
+
+        <div>
+            <label for="firstName" class="block text-gray-700 dark:text-gray-300">First Name</label>
+            <input id="firstName" name="firstName" type="text" required
+                   class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-indigo-600 dark:text-gray-200"
+                   placeholder="Enter your first name"
+                   value="${user.firstName}" />
+        </div>
+
+        <div>
+            <label for="lastName" class="block text-gray-700 dark:text-gray-300">Last Name</label>
+            <input id="lastName" name="lastName" type="text" required
+                   class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-indigo-600 dark:text-gray-200"
+                   placeholder="Enter your last name"
+                   value="${user.lastName}" />
+        </div>
+
+        <div>
+            <label for="email" class="block text-gray-700 dark:text-gray-300">Email</label>
+            <input id="email" name="email" type="email" required
+                   class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-indigo-600 dark:text-gray-200"
+                   placeholder="Enter your email"
+                   value="${user.email}" />
+        </div>
+
+        <div>
+            <label for="role" class="block text-gray-700 dark:text-gray-300">Role</label>
+            <select id="role" name="role" required
+                    class="w-full mt-1 p-3 border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-indigo-600 dark:text-gray-200">
+                <option value="USER" <c:if test="${user.role == 'USER'}">selected</c:if>>User</option>
+                <option value="MANAGER" <c:if test="${user.role == 'MANAGER'}">selected</c:if>>Manager</option>
+                <option value="ADMIN" <c:if test="${user.role == 'ADMIN'}">selected</c:if>>Admin</option>
+            </select>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold py-3 rounded-lg shadow-md hover:from-purple-500 hover:to-blue-500 transition duration-300">
+            Update User
+        </button>
+    </form>
+
+    <div class="mt-4 text-center">
+        <a href="${pageContext.request.contextPath}/users?action=list"
+           class="text-blue-500 hover:underline transition duration-200">
+            &larr; Back to User List
+        </a>
     </div>
 </div>
 
-<!-- Footer -->
-<footer class="bg-gray-800 p-4 mt-auto">
-    <div class="container mx-auto text-center text-white">
-        <p>&copy; 2024 User Management System. All rights reserved.</p>
-    </div>
-</footer>
 </body>
 </html>
