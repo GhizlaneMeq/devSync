@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.example.devsync.models.enums.UserRole;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(
         name = "users",
@@ -49,6 +52,22 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
+    // Gestion des jetons
+    @Column(nullable = false)
+    private int dailyReplacementTokens = 2;
+
+    @Column(nullable = false)
+    private int monthlyDeletionTokens = 1;
+
+    // Tâches assignées à l'utilisateur
+    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Task> assignedTasks = new HashSet<>();
+
+    // Tâches créées par l'utilisateur
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Task> createdTasks = new HashSet<>();
+
+    // Constructeurs
     public User() {}
 
     public User(String username, String password, String firstName, String lastName, String email, UserRole role) {
@@ -60,14 +79,13 @@ public class User {
         this.role = role;
     }
 
+    // Getters et Setters
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // ... (Autres getters et setters)
 
     public String getUsername() {
         return username;
@@ -113,8 +131,66 @@ public class User {
         return role;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public int getDailyReplacementTokens() {
+        return dailyReplacementTokens;
+    }
+
+    public void setDailyReplacementTokens(int dailyReplacementTokens) {
+        this.dailyReplacementTokens = dailyReplacementTokens;
+    }
+
+    public int getMonthlyDeletionTokens() {
+        return monthlyDeletionTokens;
+    }
+
+    public void setMonthlyDeletionTokens(int monthlyDeletionTokens) {
+        this.monthlyDeletionTokens = monthlyDeletionTokens;
+    }
+
+    public Set<Task> getAssignedTasks() {
+        return assignedTasks;
+    }
+
+    public void setAssignedTasks(Set<Task> assignedTasks) {
+        this.assignedTasks = assignedTasks;
+    }
+
+    public Set<Task> getCreatedTasks() {
+        return createdTasks;
+    }
+
+    public void setCreatedTasks(Set<Task> createdTasks) {
+        this.createdTasks = createdTasks;
+    }
+
+    // Méthodes utilitaires pour gérer les relations bidirectionnelles
+
+    public void addAssignedTask(Task task) {
+        assignedTasks.add(task);
+        task.setAssignee(this);
+    }
+
+    public void removeAssignedTask(Task task) {
+        assignedTasks.remove(task);
+        task.setAssignee(null);
+    }
+
+    public void addCreatedTask(Task task) {
+        createdTasks.add(task);
+        task.setCreator(this);
+    }
+
+    public void removeCreatedTask(Task task) {
+        createdTasks.remove(task);
+        task.setCreator(null);
     }
 
     @Override
