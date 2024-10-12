@@ -13,7 +13,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
     <!-- Material Symbols Outlined -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-
 </head>
 <body class="font-poppins">
 <div class="top-0 left-0 h-screen flex flex-col justify-between border-e bg-gray-800 dark:bg-gray-900 text-gray-200">
@@ -65,6 +64,7 @@
         if (loggedUser != null) {
     %>
     <div class="sticky inset-x-0 bottom-0 border-t border-gray-700">
+        <!-- User Info -->
         <a href="#" class="flex items-center p-4 hover:bg-gray-700 transition-colors duration-200">
             <img alt="Profile Picture"
                  src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
@@ -78,6 +78,16 @@
                 </p>
             </div>
         </a>
+        <!-- Logout Button -->
+        <form action="users" method="get" class="flex items-center p-4 hover:bg-gray-700 transition-colors duration-200">
+            <input type="hidden" name="action" value="logout" />
+            <button type="submit" class="flex items-center w-full text-left text-sm font-medium rounded-lg hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
+                <span class="material-symbols-outlined mr-3">
+                    logout
+                </span>
+                Logout
+            </button>
+        </form>
     </div>
     <%
         }

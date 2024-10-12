@@ -11,6 +11,8 @@
         <class>org.example.model.entities.User</class>
         <class>org.example.model.entities.Task</class>
         <class>org.example.model.entities.Tag</class>
+        <class>org.example.model.entities.Token</class>
+
         <!-- Database connection settings -->
         <properties>
             <!-- PostgreSQL connection details -->
