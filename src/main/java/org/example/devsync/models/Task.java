@@ -26,24 +26,26 @@ public class Task {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000) // Example: Limit description length
     private String description;
 
     @Column(name = "creation_date", nullable = false)
     private LocalDate creationDate;
 
-    @Column(name = "due_date",nullable = false)
+    @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TaskStatus status;
 
-    @ManyToMany
-    @JoinTable(name = "task_tags",
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "tasks_tags",
             joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags;
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
@@ -61,6 +63,6 @@ public class Task {
         this.status = status;
         this.tags = tags != null ? tags : new ArrayList<>();
         this.creator = creator;
-//        this.assignee = assignee;
+        // this.assignee is set separately
     }
 }

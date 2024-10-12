@@ -1,25 +1,33 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Youcode
-  Date: 09/10/2024
-  Time: 09:26
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
-    <title>Title</title>
+    <title>Tasks List</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body class="flex">
-<jsp:include page="../../layouts/sideBar.jsp"    />
-
+<jsp:include page="../../layouts/sideBar.jsp" />
 
 <section class="container p-4">
+    <!-- Error Messages Display -->
+    <c:if test="${not empty sessionScope.errorMessages}">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Errors!</strong>
+            <ul class="list-disc pl-5">
+                <c:forEach var="error" items="${sessionScope.errorMessages}">
+                    <li>${error}</li>
+                </c:forEach>
+            </ul>
+            <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    <a href="#" class="close" onclick="this.parentElement.parentElement.style.display='none';">&times;</a>
+                </span>
+        </div>
+        <c:remove var="errorMessages" scope="session"/>
+    </c:if>
+
+    <!-- Existing Content -->
     <div class="sm:flex sm:items-center sm:justify-between">
         <div>
             <div class="flex items-center gap-x-3">
@@ -31,7 +39,6 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-
                 <span>Add Task</span>
             </a>
         </div>
@@ -77,12 +84,22 @@
                                 </td>
                                 <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">${task.title}</td>
                                 <td class="px-4 py-4 text-sm font-medium text-gray-700 whitespace-nowrap">
-                                    <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2 text-emerald-500 bg-emerald-100/60 dark:bg-gray-800">
-                                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-
-                                        <h2 class="text-sm font-normal">${task.status}</h2>
+                                    <div class="inline-flex items-center px-3 py-1 rounded-full gap-x-2
+                                                    <c:choose>
+                                                        <c:when test="${task.status == 'PENDING'}">
+                                                            bg-yellow-100/60 text-yellow-500 dark:bg-gray-800
+                                                        </c:when>
+                                                        <c:when test="${task.status == 'IN_PROGRESS'}">
+                                                            bg-blue-100/60 text-blue-500 dark:bg-gray-800
+                                                        </c:when>
+                                                        <c:when test="${task.status == 'COMPLETED'}">
+                                                            bg-green-100/60 text-green-500 dark:bg-gray-800
+                                                        </c:when>
+                                                        <c:when test="${task.status == 'CANCELED'}">
+                                                            bg-red-100/60 text-red-500 dark:bg-gray-800
+                                                        </c:when>
+                                                    </c:choose>">
+                                        <h2 class="text-xs font-normal">${task.status}</h2>
                                     </div>
                                 </td>
                                 <td class="px-4 py-4 text-sm text-gray-500 dark:text-gray-300 whitespace-nowrap">
@@ -91,9 +108,7 @@
                                         <c:when test="${not empty task.assignee}">
                                         <img class="object-cover w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80" alt="">
                                         <div>
-
                                             <h2 class="text-sm font-medium text-gray-800 dark:text-white ">${task.assignee.firstName} ${task.assignee.lastName}</h2>
-                                            <p class="text-xs font-normal text-gray-600 dark:text-gray-400">${task.assignee.email}</p>
                                             </c:when>
                                             <c:otherwise>
                                                 <h2 class="text-xs font-medium text-red-400/50 dark:text-white ">Not Assigned</h2>
@@ -104,11 +119,11 @@
                                 </td>
                                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                                     <div class="flex items-center gap-x-6">
-                                        <button class="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
-                                        <span class="material-symbols-outlined">
-                                        visibility
-                                        </span>
-                                        </button>
+                                        <a href="tasks?action=details&id=${task.id}" class="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none">
+                                                    <span class="material-symbols-outlined">
+                                                        visibility
+                                                    </span>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -122,5 +137,3 @@
 </section>
 </body>
 </html>
-
-

@@ -1,21 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Youcode
-  Date: 09/10/2024
-  Time: 09:25
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 <head>
     <title>create task form</title>
+    <script src="${pageContext.request.contextPath}/assets/js/TaskValidation.js" type="text/javascript" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-
 </head>
 <body class="flex items-center min-h-screen bg-gray-100">
 <jsp:include page="../../layouts/sideBar.jsp"    />
@@ -35,7 +29,7 @@
 
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                    <label class="" for="creationDate">creation Date</label>
+                    <label class="" for="creationDate">start Date</label>
                     <input
                             class="w-full rounded-lg border border-gray-300 p-3 text-sm"
                             placeholder="Start Date"
@@ -71,11 +65,12 @@
             </div>
             <div>
                 <label class="" for="tag">Tags</label>
-                <select id="tag" class="js-example-basic-multiple w-full rounded-lg border border-gray-300 p-3 text-sm" name="tags[]" multiple="multiple">
+                <select id="tag" class="js-example-basic-multiple w-full rounded-lg border border-gray-300 p-3 text-sm" name="tags" multiple="multiple">
                     <c:forEach var="tag" items="${tags}">
                         <option value="${tag.id}">${tag.name}</option>
                     </c:forEach>
                 </select>
+
             </div>
 
             <div>
@@ -101,14 +96,22 @@
         </form>
     </div>
 </section>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<%
+    String errorMessage = (String) session.getAttribute("errorMessage");
+    if (errorMessage != null && !errorMessage.isEmpty()) {
+%>
 <script>
-    $(document).ready(function(){
-        $('.js-example-basic-multiple').select2();
+    Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "<%= errorMessage %>",
     });
 </script>
-
+<%
+    }
+%>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 
 </html>
-

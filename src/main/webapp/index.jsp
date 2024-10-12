@@ -1,88 +1,27 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Youcode
-  Date: 03/10/2024
-  Time: 10:10
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>User List</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <title>Welcome to DevSync</title>
 </head>
-<body class="flex font-poppins items-center justify-center">
-<div class="h-screen w-screen flex justify-center items-center dark:bg-gray-900">
-  <div class="grid gap-8">
-    <div id="back-div" class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-[26px] m-4">
-      <div class="border-[20px] border-transparent rounded-[20px] dark:bg-gray-900 bg-white shadow-lg xl:p-10 2xl:p-10 lg:p-10 md:p-10 sm:p-2 m-2">
-        <h1 class="pt-8 pb-6 font-bold dark:text-gray-400 text-5xl text-center cursor-default">Log in
-        </h1>
-        <form action="users?action=login" method="post" class="space-y-4">
-          <div>
-            <label for="email" class="mb-2  dark:text-gray-400 text-lg">Email</label>
-            <input id="email" class="border p-3 dark:bg-indigo-700 dark:text-gray-300  dark:border-gray-700 shadow-md placeholder:text-base focus:scale-105 ease-in-out duration-300 border-gray-300 rounded-lg w-full" type="email" name="email"placeholder="Email" required/>
-          </div>
-          <div>
-            <label for="password" class="mb-2 dark:text-gray-400 text-lg">Password</label>
-            <input id="password" name="password" type="password" class="border p-3 shadow-md dark:bg-indigo-700 dark:text-gray-300  dark:border-gray-700 placeholder:text-base focus:scale-105 ease-in-out duration-300 border-gray-300 rounded-lg w-full" placeholder="Password" required/>
-          </div>
-          <a class="group text-blue-400 transition-all duration-100 ease-in-out" href="#">
-              <span class="bg-left-bottom bg-gradient-to-r text-sm from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                Forget your password?
-              </span>
-          </a>
-          <button class="bg-gradient-to-r dark:text-gray-300 from-blue-500 to-purple-500 shadow-lg mt-6 p-2 text-white rounded-lg w-full hover:scale-105 hover:from-purple-500 hover:to-blue-500 transition duration-300 ease-in-out"  type="submit">
-            LOG IN
-          </button>
-        </form>
-        <div class="flex flex-col mt-4 items-center justify-center text-sm">
-          <h3 class="dark:text-gray-300"> Don't have an account?
-            <a class="group text-blue-400 transition-all duration-100 ease-in-out" href="${pageContext.request.contextPath}/users?action=list">
-                <span class="bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  Sign Up
-                </span>
+<body>
+<section class="bg-center bg-no-repeat bg-gray-700 bg-blend-multiply">
+    <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
+        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">Welcome to DevSync </h1>
+        <p class="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">Your Next-Level Task Management Solution</p>
+        <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
+            <a href="users?action=login" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
+                Sign In
+                <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
             </a>
-          </h3>
         </div>
-        <div id="third-party-auth" class="flex items-center justify-center mt-5 flex-wrap">
-          <button href="#" class="hover:scale-105 ease-in-out duration-300 shadow-lg p-2 rounded-lg m-1">
-            <img class="max-w-[25px]" src="https://ucarecdn.com/8f25a2ba-bdcf-4ff1-b596-088f330416ef/" alt="Google"/>
-          </button>
-          <button href="#" class="hover:scale-105 ease-in-out duration-300 shadow-lg p-2 rounded-lg m-1">
-            <img class="max-w-[25px]" src="https://ucarecdn.com/95eebb9c-85cf-4d12-942f-3c40d7044dc6/" alt="Linkedin"/>
-          </button>
-          <button href="#" class="hover:scale-105 ease-in-out duration-300 shadow-lg p-2 rounded-lg m-1">
-            <img class="max-w-[25px] filter dark:invert" src="https://ucarecdn.com/be5b0ffd-85e8-4639-83a6-5162dfa15a16/" alt="Github"/>
-          </button>
-          <button href="#" class="hover:scale-105 ease-in-out duration-300 shadow-lg p-2 rounded-lg m-1">
-            <img class="max-w-[25px]" src="https://ucarecdn.com/6f56c0f1-c9c0-4d72-b44d-51a79ff38ea9/" alt="Facebook"/>
-          </button>
-          <button  href="#" class="hover:scale-105 ease-in-out duration-300 shadow-lg p-2 rounded-lg m-1">
-            <img class="max-w-[25px] dark:gray-100" src="https://ucarecdn.com/82d7ca0a-c380-44c4-ba24-658723e2ab07/" alt="twitter"/>
-          </button>
-
-          <button href="#"  class="hover:scale-105 ease-in-out duration-300 shadow-lg p-2 rounded-lg m-1">
-            <img class="max-w-[25px]" src="https://ucarecdn.com/3277d952-8e21-4aad-a2b7-d484dad531fb/"  alt="apple"/>
-          </button>
-        </div>
-
-        <div class="text-gray-500 flex text-center flex-col mt-4 items-center text-sm">
-          <p class="cursor-default"> By signing in, you agree to our
-            <a class="group text-blue-400 transition-all duration-100 ease-in-out" href="#"><span class="cursor-pointer bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">Terms</span></a>and
-            <a class="group text-blue-400 transition-all duration-100 ease-in-out" href="#">
-                <span class="cursor-pointer bg-left-bottom bg-gradient-to-r from-blue-400 to-blue-400 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">Privacy Policy</span>
-            </a>
-          </p>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
+</section>
+
 </body>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </html>

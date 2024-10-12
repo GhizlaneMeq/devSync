@@ -53,11 +53,11 @@ public class UserServlet extends HttpServlet {
         List<User> users = userService.getAllUsers();
 
         request.setAttribute("users", users);
-        request.getRequestDispatcher("/WEB-INF/views/dashbord/User/list.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/dashboard/User/list.jsp").forward(request, response);
     }
 
     private void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/WEB-INF/views/dashbord/User/create.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/dashboard/User/create.jsp").forward(request, response);
     }
 
 
@@ -70,7 +70,7 @@ public class UserServlet extends HttpServlet {
             return;
         }
         request.setAttribute("user", user);
-        request.getRequestDispatcher("/WEB-INF/views/dashbord/User/edit.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/dashboard/User/edit.jsp").forward(request, response);
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
