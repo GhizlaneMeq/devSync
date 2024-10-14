@@ -23,11 +23,39 @@ public class UserService {
     }
 
     public void createUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null.");
+        }
+
+        // Hash the user's password using BCrypt
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(hashedPassword);
+
+        // Save the user to the repository
         User savedUser = userRepository.save(user);
-        Token modificationToken = new Token(TokenType.MODIFICATION, LocalDate.now().plusDays(1),savedUser,2);
-        Token suppressionToken = new Token(TokenType.SUPPRESSION, LocalDate.now().plusMonths(1),savedUser,1);
+        if (savedUser == null) {
+            throw new RuntimeException("Failed to save the user.");
+        }
+
+        // Create modification token
+        Token modificationToken = new Token(
+                TokenType.MODIFICATION,       // Type of the token
+                savedUser,                    // Associated user
+                false,                        // Used flag (initially false)
+                2,                            // Token count
+                LocalDate.now().plusDays(1)   // Last reset date
+        );
+
+        // Create suppression token
+        Token suppressionToken = new Token(
+                TokenType.SUPPRESSION,        // Type of the token
+                savedUser,                    // Associated user
+                false,                        // Used flag (initially false)
+                1,                            // Token count
+                LocalDate.now().plusMonths(1) // Last reset date
+        );
+
+        // Save the tokens using the TokenService
         tokenService.save(modificationToken);
         tokenService.save(suppressionToken);
     }

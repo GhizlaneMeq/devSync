@@ -6,6 +6,7 @@ import org.example.exception.UserNotFoundException;
 import org.example.model.entities.Tag;
 import org.example.model.entities.Task;
 import org.example.model.entities.User;
+import org.example.model.enums.TaskStatus;
 import org.example.repository.interfaces.TaskRepository;
 
 import java.time.LocalDate;
@@ -24,6 +25,8 @@ public class TaskService {
         this.tagService = tagService;
         this.userService = userService;
     }
+
+
 
     public Optional<Task> findById(Long id) {
 
@@ -116,4 +119,13 @@ public class TaskService {
         }
         return taskRepository.findByAssigneeId(assigneeId);
     }
+
+    public void updateTaskStatus(Long taskId, String newStatus){
+        Optional<Task> task = this.findById(taskId);
+        if (task != null) {
+            task.get().setStatus(TaskStatus.valueOf(newStatus));
+            this.update(task.get());
+        }
+    }
+
 }

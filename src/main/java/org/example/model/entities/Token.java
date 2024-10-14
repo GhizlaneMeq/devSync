@@ -22,9 +22,6 @@ public class Token {
     @Enumerated(EnumType.STRING)
     private TokenType type;
 
-    @Column(name = "expiration_date")
-    private LocalDate expirationDate;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -34,20 +31,14 @@ public class Token {
     @Column(name = "token_count")
     private int tokenCount;
 
-    public Token(TokenType type, LocalDate expirationDate, User user, int tokenCount) {
+    @Column(name = "last_reset", nullable = false)
+    private LocalDate lastReset;
+
+    public Token(TokenType type, User user, boolean used, int tokenCount, LocalDate lastReset) {
         this.type = type;
-        this.expirationDate = expirationDate;
         this.user = user;
-        this.used = false;
+        this.used = used;
         this.tokenCount = tokenCount;
+        this.lastReset = lastReset;
     }
-
-    public void useToken() {
-        if (!used && LocalDate.now().isBefore(expirationDate)) {
-            this.used = true;
-        } else {
-            throw new IllegalStateException("Token is already used");
-        }
-    }
-
 }

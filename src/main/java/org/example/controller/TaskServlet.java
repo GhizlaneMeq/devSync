@@ -21,6 +21,7 @@ import org.example.repository.implementation.UserRepositoryImpl;
 import org.example.repository.interfaces.TagRepository;
 import org.example.repository.interfaces.TaskRepository;
 import org.example.repository.interfaces.UserRepository;
+import org.example.scheduler.TaskStatusScheduler;
 import org.example.service.TagService;
 import org.example.service.TaskService;
 import org.example.service.TokenService;
@@ -40,6 +41,7 @@ public class TaskServlet extends HttpServlet {
     private static final String ACTION_DETAILS = "details";
     private static final String ACTION_EDIT_STATUS = "editStatus";
     private static final String ACTION_UPDATE_STATUS = "updateStatus";
+    private TaskStatusScheduler taskStatusScheduler;
 
     private TaskService taskService;
     private TagService tagService;
@@ -55,6 +57,8 @@ public class TaskServlet extends HttpServlet {
         tagService = new TagService(tagRepository);
         userService = new UserService(userRepository, tokenService);
         taskService = new TaskService(taskRepository, tagService, userService);
+        taskStatusScheduler = new TaskStatusScheduler();
+        taskStatusScheduler.startScheduler();
     }
 
     @Override
