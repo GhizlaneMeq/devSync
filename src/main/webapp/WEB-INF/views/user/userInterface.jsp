@@ -167,7 +167,18 @@
         </div>
     </div>
 </div>
+<c:if test="${not empty successMessage}">
+    <div class="alert alert-success">
+            ${successMessage}
+    </div>
+</c:if>
 
+<!-- Display Error Messages -->
+<c:if test="${not empty errorMessage}">
+    <div class="alert alert-danger">
+        <c:out value="${errorMessage}" escapeXml="false"/>
+    </div>
+</c:if>
 <!-- Main Content -->
 <main class="max-w-screen-xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
@@ -201,9 +212,22 @@
                                 </c:forEach>
                             </div>
                         </a>
-                    </c:if>
-                </c:forEach>
+                    <form action="tasks?action=requestModification" method="post">
+                        <input type="hidden" name="taskId" value="${task.id}">
+                        <input type="hidden" name="user_id" value="${ task.assignee.id}">
+                        <button type="submit" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg">Request Modification</button>
+                    </form>
+                    <form action="tasks?action=requestDeletion" method="post">
+                        <input type="hidden" name="taskId" value="${task.id}">
+                        <input type="hidden" name="user_id" value="${ task.assignee.id}">
+                        <button type="submit" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg">Request Deletion</button>
+                    </form>
+
             </div>
+            </c:if>
+            </c:forEach>
+            </div>
+
         </div>
         <!-- IN_PROGRESS Column -->
         <div class="bg-gray-800 rounded-lg p-4" id="IN_PROGRESS">

@@ -1,0 +1,296 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="org.example.model.entities.Task" %>
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>DevSync - Task Management</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Flowbite CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+    <!-- Sortable.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <!-- Custom Styles for Select2 in Dark Mode -->
+    <style>
+        /* Customize Select2 for dark mode */
+        .select2-container--default .select2-selection--multiple {
+            background-color: #2d3748;
+            color: #a0aec0;
+            border: 1px solid #4a5568;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #4a5568;
+            border: 1px solid #2d3748;
+            color: #edf2f7;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: #edf2f7;
+            cursor: pointer;
+        }
+        .select2-container--default .select2-results__option--highlighted {
+            background-color: #4a5568;
+            color: #edf2f7;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+<!-- Header -->
+<header class="bg-gray-800 shadow">
+    <div class="max-w-screen-xl mx-auto px-4 py-6 flex flex-col md:flex-row items-start md:items-center justify-between">
+        <div>
+            <h1 class="text-3xl font-bold text-white">DevSync</h1>
+            <p class="mt-2 text-sm text-gray-400">
+                Your Next-Level Task Management Solution
+            </p>
+        </div>
+        <div class="mt-4 md:mt-0 flex items-center gap-4">
+            <!-- View Website Button -->
+            <a href="users?action=userInterface&id=${task.assignee.id}"
+               class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+                <span class="text-sm font-medium">View Website</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24"
+                     stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+            </a>
+            <!-- Self-Assign Button -->
+            <button data-modal-target="selfAssignModal" data-modal-toggle="selfAssignModal"
+                    class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg focus:ring-4 focus:ring-blue-300 transition"
+                    type="button">
+                Self-Assign
+            </button>
+        </div>
+    </div>
+</header>
+
+<!-- Self-Assign Modal -->
+<div id="selfAssignModal" tabindex="-1" aria-hidden="true"
+     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-full">
+    <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative bg-gray-800 rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-white">
+                    Take Task
+                </h3>
+                <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-600 hover:text-white rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="selfAssignModal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                         viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                              stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6">
+                <form class="space-y-4" action="users?action=selfAssign" method="post">
+                    <!-- Title -->
+                    <div>
+                        <label for="title" class="block text-gray-300">Title</label>
+                        <input
+                                class="w-full rounded-lg bg-gray-700 border border-gray-600 p-3 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Title"
+                                type="text"
+                                name="title"
+                                id="title"
+                                required
+                        />
+                    </div>
+                    <!-- Dates -->
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <!-- Start Date -->
+                        <div>
+                            <label for="creationDate" class="block text-gray-300">Start Date</label>
+                            <input
+                                    class="w-full rounded-lg bg-gray-700 border border-gray-600 p-3 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Start Date"
+                                    type="date"
+                                    name="creationDate"
+                                    id="creationDate"
+                                    required
+                            />
+                        </div>
+                        <!-- Due Date -->
+                        <div>
+                            <label for="dueDate" class="block text-gray-300">Due Date</label>
+                            <input
+                                    class="w-full rounded-lg bg-gray-700 border border-gray-600 p-3 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Due Date"
+                                    type="date"
+                                    name="dueDate"
+                                    id="dueDate"
+                                    required
+                            />
+                        </div>
+                    </div>
+                    <!-- Tags -->
+                    <div>
+                        <label for="tags" class="block text-gray-300">Tags</label>
+                        <select id="tags" class="js-example-basic-multiple w-full rounded-lg bg-gray-700 border border-gray-600 p-3 text-sm text-gray-100" name="tags[]" multiple="multiple" required>
+                            <c:forEach var="tag" items="${tags}">
+                                <option value="${tag.id}">${tag.name}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <!-- Description -->
+                    <div>
+                        <label for="description" class="block text-gray-300">Description</label>
+                        <textarea
+                                class="w-full rounded-lg bg-gray-700 border border-gray-600 p-3 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="Description"
+                                rows="4"
+                                name="description"
+                                id="description"
+                                required
+                        ></textarea>
+                    </div>
+                    <!-- Submit Button -->
+                    <div>
+                        <button
+                                type="submit"
+                                class="w-full rounded-lg bg-blue-600 hover:bg-blue-700 px-5 py-3 font-medium text-white transition"
+                        >
+                            Self-Assign
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main class="max-w-screen-xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-4 lg:gap-8">
+        <!-- NOT_STARTED Column -->
+        <div class="bg-gray-800 rounded-lg p-4" id="not-started">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 2v20m0 0l-4-4m4 4l4-4"/>
+                </svg>
+                Not Started
+            </h2>
+            <ul id="not-started-list" class="space-y-4">
+                <c:forEach var="task" items="${tasks}" >
+                    <c:if test="${task.status eq 'NOT_STARTED'}">
+                        <li class="bg-gray-700 p-3 rounded-lg shadow">
+                            <h3 class="font-semibold text-lg">${task.title}</h3>
+                            <p class="text-gray-400">${task.description}</p>
+                            <div class="mt-2 flex justify-between">
+                                <span class="text-sm">${task.assignee.name}</span>
+                                <span class="text-sm">${task.dueDate}</span>
+                            </div>
+                        </li>
+                    </c:if>
+                </c:forEach>
+            </ul>
+        </div>
+
+        <!-- IN_PROGRESS Column -->
+        <div class="bg-gray-800 rounded-lg p-4" id="in-progress">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m-3-3H8"/>
+                </svg>
+                In Progress
+            </h2>
+            <ul id="in-progress-list" class="space-y-4">
+                <c:forEach var="task" items="${tasks}">
+                    <c:if test="${task.status eq 'IN_PROGRESS'}">
+                        <li class="bg-gray-700 p-3 rounded-lg shadow">
+                            <h3 class="font-semibold text-lg">${task.title}</h3>
+                            <p class="text-gray-400">${task.description}</p>
+                            <div class="mt-2 flex justify-between">
+                                <span class="text-sm">${task.assignee.name}</span>
+                                <span class="text-sm">${task.dueDate}</span>
+                            </div>
+                        </li>
+                    </c:if>
+                </c:forEach>
+            </ul>
+        </div>
+
+        <!-- COMPLETED Column -->
+        <div class="bg-gray-800 rounded-lg p-4" id="completed">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m3 3V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10l2-2h10"/>
+                </svg>
+                Completed
+            </h2>
+            <ul id="completed-list" class="space-y-4">
+                <c:forEach var="task" items="${tasks}">
+                    <c:if test="${task.status eq 'COMPLETED'}">
+                        <li class="bg-gray-700 p-3 rounded-lg shadow">
+                            <h3 class="font-semibold text-lg">${task.title}</h3>
+                            <p class="text-gray-400">${task.description}</p>
+                            <div class="mt-2 flex justify-between">
+                                <span class="text-sm">${task.assignee.name}</span>
+                                <span class="text-sm">${task.dueDate}</span>
+                            </div>
+                        </li>
+                    </c:if>
+                </c:forEach>
+            </ul>
+        </div>
+
+        <!-- CANCELED Column -->
+        <div class="bg-gray-800 rounded-lg p-4" id="canceled">
+            <h2 class="text-xl font-semibold mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                Canceled
+            </h2>
+            <ul id="canceled-list" class="space-y-4">
+                <c:forEach var="task" items="${tasks}">
+                    <c:if test="${task.status eq 'CANCELED'}">
+                        <li class="bg-gray-700 p-3 rounded-lg shadow">
+                            <h3 class="font-semibold text-lg">${task.title}</h3>
+                            <p class="text-gray-400">${task.description}</p>
+                            <div class="mt-2 flex justify-between">
+                                <span class="text-sm">${task.assignee.name}</span>
+                                <span class="text-sm">${task.dueDate}</span>
+                            </div>
+                        </li>
+                    </c:if>
+                </c:forEach>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<!-- Flowbite JS -->
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.bundle.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+
+    // SortableJS for drag-and-drop functionality
+    const columns = ['not-started', 'in-progress', 'completed', 'canceled'];
+
+    columns.forEach(col => {
+        new Sortable(document.getElementById(col), {
+            group: 'tasks',
+            animation: 150,
+            onEnd: function (evt) {
+                // Handle the reordering logic here
+                console.log('Moved item from column: ', evt.from.id, ' to column: ', evt.to.id);
+            }
+        });
+    });
+</script>
+</body>
+</html>

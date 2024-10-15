@@ -12,7 +12,7 @@
         <class>org.example.model.entities.Task</class>
         <class>org.example.model.entities.Tag</class>
         <class>org.example.model.entities.Token</class>
-        <class>org.example.model.entities.TaskHistory</class>
+        <class>org.example.model.entities.Request</class>
 
         <!-- Database connection settings -->
         <properties>
@@ -24,7 +24,7 @@
 
             <!-- Hibernate-specific settings -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- Options: update, validate, create-drop -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
         </properties>

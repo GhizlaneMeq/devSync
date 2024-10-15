@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.model.enums.TokenType;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -19,26 +16,25 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private TokenType type;
-
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private boolean used;
+    @Column(name = "modify_token_count", nullable = false)
+    private int modifyTokenCount;
 
-    @Column(name = "token_count")
-    private int tokenCount;
+    @Column(name = "delete_token_count", nullable = false)
+    private int deleteTokenCount;
 
-    @Column(name = "last_reset", nullable = false)
-    private LocalDate lastReset;
-
-    public Token(TokenType type, User user, boolean used, int tokenCount, LocalDate lastReset) {
-        this.type = type;
+    public Token(User user, int modifyTokenCount, int deleteTokenCount) {
         this.user = user;
-        this.used = used;
-        this.tokenCount = tokenCount;
-        this.lastReset = lastReset;
+        this.modifyTokenCount = modifyTokenCount;
+        this.deleteTokenCount = deleteTokenCount;
     }
+
+    public Token(User user) {
+        this(user, 2, 1);
+    }
+
+
 }

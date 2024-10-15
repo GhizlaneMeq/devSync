@@ -29,10 +29,10 @@ public class TaskStatusScheduler {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("DevSyncPU");
         TaskRepository taskRepository = new TaskRepositoryImpl(entityManagerFactory);
         TagRepository tagRepository = new TagRepositoryImpl(entityManagerFactory);
-        UserRepository userRepository = new UserRepositoryImpl(entityManagerFactory);
-        TokenService tokenService = new TokenService(new TokenRepositoryImpl(entityManagerFactory));
+        UserRepository userRepository = new UserRepositoryImpl();
+        TokenService tokenService = new TokenService();
         TagService tagService = new TagService(tagRepository);
-        UserService userService = new UserService(userRepository, tokenService);
+        UserService userService = new UserService(userRepository,tokenService);
         this.taskService = new TaskService(taskRepository, tagService, userService);
 
     }

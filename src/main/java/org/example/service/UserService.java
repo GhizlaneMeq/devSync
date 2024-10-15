@@ -2,7 +2,6 @@ package org.example.service;
 
 import org.example.model.entities.Token;
 import org.example.model.entities.User;
-import org.example.model.enums.TokenType;
 import org.example.model.enums.UserRole;
 import org.example.repository.interfaces.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -18,8 +17,10 @@ public class UserService {
     TokenService tokenService;
 
     public UserService(UserRepository userRepository, TokenService tokenService) {
+
+
         this.userRepository = userRepository;
-        this.tokenService = tokenService;
+      this.tokenService = tokenService;
     }
 
     public void createUser(User user) {
@@ -37,27 +38,10 @@ public class UserService {
             throw new RuntimeException("Failed to save the user.");
         }
 
-        // Create modification token
-        Token modificationToken = new Token(
-                TokenType.MODIFICATION,       // Type of the token
-                savedUser,                    // Associated user
-                false,                        // Used flag (initially false)
-                2,                            // Token count
-                LocalDate.now().plusDays(1)   // Last reset date
-        );
-
-        // Create suppression token
-        Token suppressionToken = new Token(
-                TokenType.SUPPRESSION,        // Type of the token
-                savedUser,                    // Associated user
-                false,                        // Used flag (initially false)
-                1,                            // Token count
-                LocalDate.now().plusMonths(1) // Last reset date
-        );
+        Token modifyToken = new Token(savedUser, 2, 1); // Default 2 modify tokens
 
         // Save the tokens using the TokenService
-        tokenService.save(modificationToken);
-        tokenService.save(suppressionToken);
+        tokenService.save(modifyToken);
     }
 
     public User getUserById(Long id) {

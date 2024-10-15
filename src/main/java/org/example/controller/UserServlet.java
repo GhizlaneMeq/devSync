@@ -34,11 +34,11 @@ public class UserServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("DevSyncPU");
-        UserRepository userRepository = new UserRepositoryImpl(entityManagerFactory);
+        UserRepository userRepository = new UserRepositoryImpl();
         TaskRepository taskRepository = new TaskRepositoryImpl(entityManagerFactory);
-        TokenService tokenService = new TokenService(new TokenRepositoryImpl(entityManagerFactory));
+        TokenService tokenService = new TokenService();
         tagService = new TagService(new TagRepositoryImpl(entityManagerFactory));
-        userService = new UserService(userRepository, tokenService);
+        userService = new UserService(userRepository,tokenService);
         taskService = new TaskService(taskRepository, tagService, userService);
     }
 

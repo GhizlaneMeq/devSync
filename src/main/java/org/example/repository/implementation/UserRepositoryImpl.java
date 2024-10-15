@@ -11,8 +11,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     EntityManagerFactory entityManagerFactory;
 
-    public UserRepositoryImpl(EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
+    public UserRepositoryImpl() {
+
+        this.entityManagerFactory = Persistence.createEntityManagerFactory("DevSyncPU");;
     }
 
     @Override

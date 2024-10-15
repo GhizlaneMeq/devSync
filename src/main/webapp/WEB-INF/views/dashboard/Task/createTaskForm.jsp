@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -103,7 +103,7 @@
                     >
                         <option value="" disabled selected>Select an assignee</option>
                         <c:forEach var="user" items="${users}">
-                            <option value="${user.id}">${user.firstName} ${user.lastName}</option>
+                            <option value="${user.id}">${fn:escapeXml(user.firstName)} ${fn:escapeXml(user.lastName)}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -113,13 +113,14 @@
                     <label for="tags" class="block text-gray-300 font-medium mb-2">Tags</label>
                     <select
                             id="tags"
-                            name="tags[]"
-                            class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 select2-multiple text-gray-100"
-                            multiple="multiple"
+                            name="tags" <!-- Changed from "tags[]" to "tags" -->
+                    class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 select2-multiple text-gray-100"
+                    multiple="multiple"
+                    required <!-- Ensuring at least one tag is selected -->
                     >
-                        <c:forEach var="tag" items="${tags}">
-                            <option value="${tag.id}">${tag.name}</option>
-                        </c:forEach>
+                    <c:forEach var="tag" items="${tags}">
+                        <option value="${tag.id}">${fn:escapeXml(tag.name)}</option>
+                    </c:forEach>
                     </select>
                 </div>
 
@@ -151,25 +152,34 @@
 </main>
 
 <!-- Error Handling with SweetAlert -->
-<%
-    String errorMessage = (String) session.getAttribute("errorMessage");
-    if (errorMessage != null && !errorMessage.isEmpty()) {
-%>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "<%= errorMessage %>",
-            background: '#2d3748',
-            color: '#a0aec0',
+<c:if test="${not empty errorMessage}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                html: "${fn:escapeXml(errorMessage)}",
+                background: '#2d3748',
+                color: '#a0aec0',
+            });
         });
-    });
-</script>
-<%
-        session.removeAttribute("errorMessage"); // Clear the error message after displaying
-    }
-%>
+    </script>
+</c:if>
+
+<!-- Success Handling with SweetAlert -->
+<c:if test="${not empty message}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "${fn:escapeXml(message)}",
+                background: '#2d3748',
+                color: '#a0aec0',
+            });
+        });
+    </script>
+</c:if>
 
 <!-- Initialize Select2 -->
 <script>

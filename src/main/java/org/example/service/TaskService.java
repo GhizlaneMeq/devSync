@@ -1,6 +1,5 @@
 package org.example.service;
 
-import org.example.exception.TaskAlreadyExistException;
 import org.example.exception.TaskNotFoundException;
 import org.example.exception.UserNotFoundException;
 import org.example.model.entities.Tag;
@@ -128,4 +127,11 @@ public class TaskService {
         }
     }
 
+    public List<Task> findByCreatorId(Long creator_id) {
+        User user = userService.getUserById(creator_id);
+        if (user == null) {
+            throw new UserNotFoundException("User with ID " + creator_id + " not found");
+        }
+        return taskRepository.findByCreatorId(creator_id);
+    }
 }
